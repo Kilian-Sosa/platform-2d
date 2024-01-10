@@ -16,10 +16,8 @@ public class PlayerController : MonoBehaviour {
 
         GetComponent<Rigidbody2D>().velocity = new Vector2(playerSpeed * direction, GetComponent<Rigidbody2D>().velocity.y);
 
-        if (direction == 1) 
-            GetComponent<SpriteRenderer>().flipX = true;
-        if (direction == -1)
-            GetComponent<SpriteRenderer>().flipX = false; 
+        if (direction == 1) GetComponent<SpriteRenderer>().flipX = true;
+        if (direction == -1) GetComponent<SpriteRenderer>().flipX = false; 
         
         if (Input.GetButtonDown("Fire1") && !isJumping) {
             //jumpParticles.Play();
@@ -33,16 +31,15 @@ public class PlayerController : MonoBehaviour {
 
         RaycastHit2D raycast = Physics2D.Raycast(origin, Vector2.down, lineLength);
 
-        if (raycast.collider == null) isJumping = true;
-        else isJumping = false;
+        isJumping = raycast.collider == null;
 
         if (raycast.collider == null) SetAnimation("jump");
         else SetAnimation(GetComponent<Rigidbody2D>().velocity.x != 0 ? "run" : "idle");
     }
 
     void SetAnimation(string name) {
-        AnimatorControllerParameter[] parametros = GetComponent<Animator>().parameters;
-        foreach (var item in parametros) GetComponent<Animator>().SetBool(item.name, false);
+        AnimatorControllerParameter[] parameters = GetComponent<Animator>().parameters;
+        foreach (var item in parameters) GetComponent<Animator>().SetBool(item.name, false);
         GetComponent<Animator>().SetBool(name, true);
     }
 
@@ -58,8 +55,8 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision != null) {
-            if (collision.CompareTag("Coin")) {
-                GameObject.Find("Score").GetComponent<TextMeshProUGUI>().text = "Coins: " + ++score;
+            if (collision.CompareTag("Key")) {
+                GameObject.Find("Score").GetComponent<TextMeshProUGUI>().text = "Keys: " + ++score;
                 Destroy(collision.gameObject);
             }
         }
