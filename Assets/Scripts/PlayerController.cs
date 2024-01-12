@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] float lineLength = 1f;
     [SerializeField] float offset = 1f;
-    private int score = 0;
 
     void Update() {
         float direction = Input.GetAxisRaw("Horizontal");
@@ -31,7 +30,8 @@ public class PlayerController : MonoBehaviour {
 
         RaycastHit2D raycast = Physics2D.Raycast(origin, Vector2.down, lineLength);
 
-        isJumping = raycast.collider == null;
+        if (raycast.collider == null) isJumping = true;
+        else isJumping = false;
 
         if (raycast.collider == null) SetAnimation("jump");
         else SetAnimation(GetComponent<Rigidbody2D>().velocity.x != 0 ? "run" : "idle");
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision != null) {
-            if (collision.collider.CompareTag("Enemy")) {
+            if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("Obstacle")) {
                 AudioManager.instance.PlaySFX("Hit");
                 AudioManager.instance.PlayMusic("LoseALife");
                 SCManager.instance.LoadScene("GameOver");
@@ -56,8 +56,11 @@ public class PlayerController : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision != null) {
             if (collision.CompareTag("Key")) {
-                GameObject.Find("Score").GetComponent<TextMeshProUGUI>().text = "Keys: " + ++score;
                 Destroy(collision.gameObject);
+            }
+            if (collision.CompareTag("Goal")) {
+                if (GameObject.Find("Key") != null) return;
+                GameManager.instance.ChangeLevel();
             }
         }
     }
