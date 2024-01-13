@@ -22,18 +22,14 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void LoadSFXClips() {
-        sfxClips["Jump"] = Resources.Load<AudioClip>("SFX/Jump");
-        sfxClips["Hit"] = Resources.Load<AudioClip>("SFX/Hit");
-        sfxClips["Jingle"] = Resources.Load<AudioClip>("SFX/Jingle_Achievement");
-        sfxClips["Shoot"] = Resources.Load<AudioClip>("SFX/Shoot");
-        sfxClips["CollectCoin"] = Resources.Load<AudioClip>("SFX/Collect_Coin");
+        sfxClips["Jump"] = Resources.Load<AudioClip>("SFX/JumpSFX");
+        sfxClips["Hit"] = Resources.Load<AudioClip>("SFX/HitSFX");
+        sfxClips["CollectCoin"] = Resources.Load<AudioClip>("SFX/KeySFX");
+        sfxClips["Lose"] = Resources.Load<AudioClip>("SFX/LoseSFX");
     }
 
     private void LoadMusicClips() {
         musicClips["MainTheme"] = Resources.Load<AudioClip>("Music/Main_Theme");
-        musicClips["LoseALife"] = Resources.Load<AudioClip>("Music/Lost_A_Life");
-        musicClips["LevelComplete"] = Resources.Load<AudioClip>("Music/Level_Complete");
-        musicClips["InvincibilityTheme"] = Resources.Load<AudioClip>("Music/Invincibility_Theme");
     }
 
     public void PlaySFX(string clipName) {

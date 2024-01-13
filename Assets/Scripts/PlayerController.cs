@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
         if (direction == -1) GetComponent<SpriteRenderer>().flipX = false; 
         
         if (Input.GetButtonDown("Fire1") && !isJumping) {
-            //jumpParticles.Play();
+            jumpParticles.Play();
             AudioManager.instance.PlaySFX("Jump");
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour {
         if (collision != null) {
             if (collision.collider.CompareTag("Enemy") || collision.collider.CompareTag("Obstacle")) {
                 AudioManager.instance.PlaySFX("Hit");
-                AudioManager.instance.PlayMusic("LoseALife");
+                AudioManager.instance.PlaySFX("Lose");
                 SCManager.instance.LoadScene("GameOver");
             }
         }
@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision != null) {
             if (collision.CompareTag("Key")) {
+                AudioManager.instance.PlaySFX("CollectCoin");
                 Destroy(collision.gameObject);
             }
             if (collision.CompareTag("Goal")) {
